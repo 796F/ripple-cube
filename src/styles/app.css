@@ -1,0 +1,8 @@
+html {
+  background: rgba(50, 50, 50, 0.8);
+}
+
+.backface {
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
+}
