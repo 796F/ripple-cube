@@ -62,15 +62,17 @@ RippleSurface.prototype.ripple = function ripple(x, y, delay) {
 
 RippleSurface.prototype._bindEvents = function() {
   this._eventInput.on('ripple', function(data) {
-    if(data.rippleTTL > 0) {
+    // if(data.rippleTTL > 0) {
       //ripple this surface, 
-      this.ripple(data.clientX, data.clientY, 500);
+      this.ripple(data.clientX, data.clientY, 0);
 
-      //emit event with ttl - 1
-      data.layerId = this.id;
-      data.rippleTTL -= 1;
-      this._eventOutput.emit('rippled', data);  
-    }
+      // //emit event with ttl - 1
+      // data.layerId = this.id;
+      // data.rippleTTL -= 1;
+      // setTimeout(function() {
+      //   this._eventOutput.emit('rippled', data);  
+      // }.bind(this, data), 500)
+    // }
   }.bind(this));
 }
 
@@ -80,7 +82,7 @@ RippleSurface.prototype._createSurface = function() {
     classes : this.options.classes,
     size: [300, 300],
     properties : {
-      '-webkit-box-shadow' : '0px 0px 2px 2px rgba(255, 255, 255, 1)',
+      '-webkit-box-shadow' : '0px 0px 2px 2px rgba(255, 255, 255, 0)',
       overflow: 'hidden'
     }
   });

@@ -57,7 +57,7 @@ function RippleCube() {
       "scroll" : {scale : 0.3}
     });
 
-    this.xLayers = {};
+    this.xLayers = [];
     this.yLayers = {};
     this.zLayers = {};
 
@@ -83,19 +83,19 @@ RippleCube.prototype._createXLayers = function() {
     });
 
 
-    layer._eventOutput.on('rippled', function(data) {
-      try{
-        this.xLayers[data.layerId-1]._eventInput.emit('ripple', data);
-      }catch(err) {}
+    // layer._eventOutput.on('rippled', function(data) {
+    //   try{
+    //     this.xLayers[data.layerId-1]._eventInput.emit('ripple', data);
+    //   }catch(err) {}
       
-      try {
-        this.xLayers[data.layerId+1]._eventInput.emit('ripple', data);
-      }catch(err) {}
-      // console.log(data.layerId, data.clientX, data.clientY);
-    }.bind(this));
+    //   try {
+    //     this.xLayers[data.layerId+1]._eventInput.emit('ripple', data);
+    //   }catch(err) {}
+    //   // console.log(data.layerId, data.clientX, data.clientY);
+    // }.bind(this));
 
     layer.pipe(this.sync);
-    this.xLayers[layerId] = layer;
+    this.xLayers.push(layer);
     this._rootNode.add(layer);  
   }
   
@@ -147,6 +147,12 @@ RippleCube.prototype._bindEvents = function() {
     var old_rotation = self._rotationTransitionable.get();
     old_rotation[1] += data.delta[0]/100;
     old_rotation[0] -= data.delta[1]/100;
+
+    var layerId = Math.ceil(Math.random()* self.xLayers.length) - 1;
+    if(Math.random() > 0.9) self.xLayers[layerId]._eventInput.emit('ripple', {
+      clientX : 0.5 * window.innerWidth, 
+      clientY : 0.5 * window.innerHeight
+    });
   });
 }
 
